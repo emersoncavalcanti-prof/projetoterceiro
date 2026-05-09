@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetoterceiro/pages/login.dart';
+import 'package:projetoterceiro/pages/splash_screen.dart';
 
 class AppWiget extends StatelessWidget {
   const AppWiget({super.key});
@@ -9,8 +10,9 @@ class AppWiget extends StatelessWidget {
     return MaterialApp(
       title: 'Consumo de API',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
+        '/': (context) => SplashScreen(),
         '/login': (context) => Login(),
       },
     );
