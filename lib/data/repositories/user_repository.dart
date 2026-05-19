@@ -1,5 +1,6 @@
 import 'package:projetoterceiro/data/http/http_client.dart';
 import 'package:projetoterceiro/data/http/endpoints.dart';
+import 'package:projetoterceiro/data/local/local_storage.dart';
 import 'package:projetoterceiro/data/models/user_model.dart';
 
 class UserRepository{
@@ -30,6 +31,35 @@ class UserRepository{
       throw Exception('Erro desconhecido: ${response.statusCode}'); 
     }
 
+  }
+
+
+  Future<List<UserModel>> get() async {
+    final token = await LocalStorage.getString('token');
+    
+    final response = await client.get(
+      url: '${Endpoints.baseUrl}/users', 
+      headers: {
+        'Authorization': 'Bearer $token'}
+        );
+
+        if(response.statusCode == 200){
+          final List<UserModel> users =[];
+          final body = response.data;
+
+          body.map((item){
+            final UserModel user = UserModel.fromMap(item);
+            users.add(user);
+          }).toList();
+
+          return users;
+        }else if(response.statusCode == 401){
+          throw Exception('Token inválido ou expirado');
+        }else if(response.statusCode == 404){
+          throw Exception('Endpoint não encontrado');
+        }else{
+          throw Exception('Erro desconhecido: ${response.statusCode}');  
+        }
   }
 
 }
