@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:projetoterceiro/app_widget.dart';
 import 'package:projetoterceiro/widget/custom_edit.dart';
 
 class Login extends StatefulWidget {
