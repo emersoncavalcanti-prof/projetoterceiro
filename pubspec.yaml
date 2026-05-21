@@ -25,4 +25,5 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/
+    - assets/animacoes/cart.json
+    - assets/animacoes/loading.json
