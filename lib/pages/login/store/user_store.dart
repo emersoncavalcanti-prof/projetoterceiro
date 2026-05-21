@@ -56,8 +56,7 @@ class UserStore {
     } finally {
       isLoading.value = false;
     }
-    isLoading.value = false;
+    
     return null;
-
 }
 }
