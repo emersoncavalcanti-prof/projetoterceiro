@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:projetoterceiro/data/http/http_client.dart';
+import 'package:projetoterceiro/data/repositories/user_repository.dart';
+import 'package:projetoterceiro/pages/login/store/user_store.dart';
 import 'package:projetoterceiro/widget/custom_edit.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,8 +14,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  final controllerEmail = TextEditingController();
+  final controllerSenha = TextEditingController();
+  bool clicou = false;
+
   @override
   Widget build(BuildContext context) {
+
+    final dioClient = Provider.of<DioClient>(context);
+    UserStore store = UserStore(repository: UserRepository(client: dioClient));
+    
     return  Scaffold(
       appBar: AppBar(
         

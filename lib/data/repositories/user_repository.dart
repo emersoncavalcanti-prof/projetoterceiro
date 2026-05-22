@@ -7,7 +7,7 @@ class UserRepository{
 
   final IHttpClient client;
 
-  UserRepository(this.client);
+  UserRepository({required this.client});
 
   Future<UserModel> login({ required Map<String, dynamic> data}) async {
     final response = await client.post(
