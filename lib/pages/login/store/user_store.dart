@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:projetoterceiro/data/http/exceptions.dart';
 import 'package:projetoterceiro/data/local/local_storage.dart';
@@ -41,9 +43,10 @@ class UserStore {
         'email': email,
         'password': password,
       };
-
+      
+  
       final user = await repository.login(data: data);
-
+      
       if(user.token.isNotEmpty){
         LocalStorage.saveString('token', user.token);
       }
@@ -52,7 +55,11 @@ class UserStore {
     } on NotFoundException catch (e) {
       error.value = e.message;
     }catch (e) {
-      error.value = e.toString();
+      if(e.toString().contains('401')){
+        error.value = 'Email ou senha inválidos';
+      } else { 
+        error.value = e.toString();
+      }
     } finally {
       isLoading.value = false;
     }

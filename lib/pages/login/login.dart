@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:projetoterceiro/data/http/http_client.dart';
+import 'package:projetoterceiro/data/models/user_model.dart';
 import 'package:projetoterceiro/data/repositories/user_repository.dart';
 import 'package:projetoterceiro/pages/login/store/user_store.dart';
 import 'package:projetoterceiro/widget/custom_edit.dart';
@@ -17,13 +18,23 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final controllerEmail = TextEditingController();
   final controllerSenha = TextEditingController();
-  bool clicou = false;
 
   @override
   Widget build(BuildContext context) {
 
     final dioClient = Provider.of<DioClient>(context);
     UserStore store = UserStore(repository: UserRepository(client: dioClient));
+
+    Future<void> login() async {
+      if (_formKey.currentState!.validate()) {        
+
+        final user = await store.login(email: controllerEmail.text, password: controllerSenha.text);
+        if(!mounted) return;
+        if(user != null){
+          Navigator.pushReplacementNamed(context, '/home', arguments: user); 
+        }
+      }
+    }
     
     return  Scaffold(
       appBar: AppBar(
@@ -74,17 +85,47 @@ class _LoginState extends State<Login> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      store.login(email: controllerEmail.text, password: controllerSenha.text);
-                    }
-                    
+                    login();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
                   child: Text('Entrar', style: TextStyle(fontSize: 18,color: Colors.white)),
                 ),
-              )
+              ),
+
+              ValueListenableBuilder(
+                valueListenable: store.error,
+                builder: (context, errorMessage, child) {
+                  if (errorMessage.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  );
+                },
+              ),
+              ValueListenableBuilder(
+                  valueListenable: store.isLoading,
+                  builder: (context, isLoading, child) {
+                    if (!isLoading) {
+                      return SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Lottie.asset(
+                        'assets/animacoes/loading.json',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),
