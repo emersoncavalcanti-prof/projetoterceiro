@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projetoterceiro/data/http/http_client.dart';
 import 'package:projetoterceiro/pages/home/home_page.dart';
 import 'package:projetoterceiro/pages/login/login.dart';
+import 'package:projetoterceiro/pages/login/usuario_page.dart';
 import 'package:projetoterceiro/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class AppWiget extends StatelessWidget {
           '/': (context) => SplashScreen(),
           '/login': (context) => Login(),
           '/home': (context) => HomePage(),
+          '/usuario': (context) => UsuarioPage(),
         },
       ),
     );
