@@ -38,7 +38,7 @@ class UserRepository{
     final token = await LocalStorage.getString('token');
     
     final response = await client.get(
-      url: '${Endpoints.baseUrl}/users', 
+      url: '${Endpoints.baseUrl}/usuarios', 
       headers: {
         'Authorization': 'Bearer $token'}
         );
